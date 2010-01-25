@@ -89,7 +89,16 @@ class Request (FlickrAppRequest) :
                 'category' : parts[2],
                 }
 
+        comment_id = None
+
         if re_comment.match(parts[3]):
+            comment_id = parts[3]
+        elif re_comment.match(obj.fragment):
+            comment_id = obj.fragment
+        else:
+            pass
+
+        if comment_id:
 
             data = {
                 'url' : url,
@@ -104,7 +113,7 @@ class Request (FlickrAppRequest) :
                 rsp = self.proxy_api_call(method, args, 86400)
 
                 for c in rsp['comments']['comment']:
-                    if c['permalink'].endswith(parts[3]):
+                    if c['permalink'].endswith(comment_id):
                         data['commentor_nsid'] = c['author']
 
             except Exception, e:
