@@ -22,6 +22,20 @@ class Request (FlickrAppRequest) :
 
         return True
 
+    def is_flickr_url(self, url):
+
+        try:
+            obj = urlparse.urlparse(url)
+        except Exception, e:
+            return False
+
+        valid_hosts = ('flickr.com', 'www.flickr.com')
+
+        if not obj.hostname in valid_hosts:
+            return False
+
+        return True
+
     def parse_url(self, url):
 
         if url.endswith("/"):
@@ -106,13 +120,13 @@ class Request (FlickrAppRequest) :
         for f in faves:
 
             if self.user and self.user.nsid == f.creator_nsid:
-                f.creator = 'you'
+                f.creator = 'You'
             else:
                 creator = self.flickr_get_user_info(f.creator_nsid)
                 f.creator = creator['username']['_content']
 
             if self.user and self.user.nsid == f.owner_nsid:
-                f.owner = 'you'
+                f.owner = 'You'
             else:
                 owner = self.flickr_get_user_info(f.owner_nsid)
                 f.owner = owner['username']['_content']
@@ -120,7 +134,7 @@ class Request (FlickrAppRequest) :
             if f.commentor_nsid:
 
                 if self.user and self.user.nsid == f.commentor_nsid:
-                    f.commentor = 'you'
+                    f.commentor = 'You'
                 else:
                     commentor = self.flickr_get_user_info(f.commentor_nsid)
                     f.commentor = commentor['username']['_content']

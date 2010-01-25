@@ -9,7 +9,7 @@
 {% endif %}
 
 <form method="POST" style="margin-top:50px;">
-	<input type="text" size="40" value="" name="url" style="font-size:1.5em;border:10px solid pink;color:darkslategrey;padding:10px;font-weight:700;background-color:beige;" />
+	<input type="text" size="40" value="{{ url|escape }}" name="url" style="font-size:1.5em;border:10px solid pink;color:darkslategrey;padding:10px;font-weight:700;background-color:beige;" />
 	<input type="hidden" name="crumb" value="{{ fave_crumb|escape }}" />
 	<input type="submit" value="FAVE THIS" style="font-size:1.5em; border:10px solid pink;padding:10px;margin-left:15px;font-weight:700;" />
 </form>

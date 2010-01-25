@@ -9,6 +9,11 @@ class Main (things.Request):
             self.display("main_logged_out.html")
             return
 
+        url = self.request.get('url')
+
+        if url and self.is_flickr_url(url):
+            self.assign('url', url)
+
         fave_crumb = self.generate_crumb(self.user, 'method=fave')
         self.assign('fave_crumb', fave_crumb)
 

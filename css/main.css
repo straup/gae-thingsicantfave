@@ -39,6 +39,18 @@ h3 {
 #example_image img { 
 }
 
+
+.faved_when {
+    font-size:small;
+    color:#adadad;
+}
+
+#faves_list li {
+    line-height: 40px;
+    font-size: 1.5em;
+    list-style-type: none;
+}
+
 #foot { 
         text-align:right;
         font-size:11px;
