@@ -1,5 +1,24 @@
 {% include "inc_head.html" %}
 
-<a href="/faves">Recently faved</a>
+<div class="margin20" style="margin-left:15%;">
+
+<h2>Things I Can't Fave</h2>
+
+<p style="font-size:small;">This is a simple web application that allows you to favourite things you can't otherwise fave on Flickr. Things like sets, collection, galleries and comments.</p>
+
+<ul style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:50px;">
+<li>All faves are public.</li>
+<li>There is <a href="/faves">a page with recently faved items</a>.</li>
+<li>There is a page with all your faves.</li>
+<li>You can export all of your faves.</li>
+</ul>
+
+<p id="getstarted"><strong><a href="/signin">&rarr; Sign in to get started</a></strong></p>
+
+<p style="font-size:small;font-style:italic;">The first time you sign in you
+  will be taken to Flickr and asked authorize the <q>Contacts Who've Faved</q>
+  application. You should only need to do this once.</p>
+
+</div>
 
 {% include "inc_foot.html" %}

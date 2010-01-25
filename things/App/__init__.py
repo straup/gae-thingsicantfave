@@ -60,6 +60,8 @@ class Main (things.Request):
             return
 
         self.assign('faved', True)
+        self.assign('fave', fave)
+
         self.display('main_logged_in.html')
         return
 
@@ -73,6 +75,8 @@ class RecentFaves(things.Request):
         faves = faves.fetch(20)
 
         self.prepare_faves(faves)
+
+        self.assign("rss_feed", "http://thingsicantfave.appspot.com/rss/faves")
 
         self.assign('faves', faves)
         self.display('recently_faved.html')
@@ -106,6 +110,21 @@ class FavedBy(things.Request):
 
         faves = faves.fetch(100)
         self.prepare_faves(faves)
+
+        if self.user and creator_nsid == self.user.nsid:
+            self.assign('who', 'You')
+        else:
+            user = self.flickr_get_user_info(creator_nsid)
+            self.assign('who', user['username']['_content'])
+
+        self.assign('what', what)
+
+        rss_feed = "http://thingsicantfave.appspot.com/rss/faves/%s" % creator_nsid
+
+        if what:
+            rss_feed += "/%s" % what
+
+        self.assign("rss_feed", rss_feed)
 
         self.assign('faves', faves)
         self.display('faved_by.html')

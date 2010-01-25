@@ -8,24 +8,23 @@
             <link rel="stylesheet" href="/css/main.css" type="text/css" />
 {% endif %}
 
+	    <script type="text/javascript" src="/javascript/jquery.js"></script>
+
 {% if user.username %}
             <meta http-equiv="Pragma" content="no-cache">
             <meta http-equiv="Cache-Control" content="no-cache">
             <meta http-equiv="Expires" content="Sat, 01 Dec 2001 00:00:00 GMT">
-	    <meta http-equiv="refresh" content="{{ refresh|escape }}" />
+            <meta http-equiv="refresh" content="{{ refresh|escape }}" />
 {% endif %}
 
-{% if browser.iphone %}
-            <meta name="viewport" content="width=340" />
+{% if rss_feed %}
+            <link rel="alternate" type="application/rdf+xml" title="things I can't fave RSS 2.0 feed" href="{{ rss_feed|escape }}"/>
 {% endif %}
-
         </head>
         <body>
 
             <div id="whoami" style="background-color:beige;opacity:.85;padding-left:25px;">
-{% if browser.mobile %}
 
-{% else %}
             {% if user.username %}
                 You are logged in with your <a href="http://www.flickr.com/photos/{% ifequal user.path_alias "" %}{{ user.nsid|escape }}{% else %}{{ user.path_alias|escape }}{% endifequal %}/" class="fl_username">{{ user.username|escape }}</a> Flickr account
 
@@ -43,8 +42,7 @@
                   <input type="submit" value="sign in" />
                 </form>
             {% endif %}
-{% endif %}
+
             </div>
             <br clear="all" />
-
             <div id="main">

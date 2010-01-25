@@ -45,5 +45,4 @@ def faves_for_creator(owner_nsid, category=None):
     return res
 
 def faves_for_owner(owner_nsid, category=None):
-
-    "SELECT * FROM dbThings WHERE owner_nsid = :1"
+    pass

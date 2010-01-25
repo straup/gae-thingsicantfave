@@ -122,6 +122,15 @@ class Request (FlickrAppRequest) :
 
         for f in faves:
 
+            if f.category == 'comments':
+                f.category_singular = 'comment'
+            elif f.category == 'galleries':
+                f.category_singular = 'gallery'
+            elif f.category == 'sets':
+                f.category_singular = 'set'
+            elif f.category == 'collections':
+                f.category_singular = 'collection'
+
             if self.user and self.user.nsid == f.creator_nsid:
                 f.creator = 'You'
             else:

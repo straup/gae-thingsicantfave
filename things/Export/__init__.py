@@ -26,6 +26,8 @@ class JSON (things.Request):
                     'url' : f.url,
                     })
 
+        self.response.headers['Content-Type'] = "text/json"
+
         try:
             print simplejson.dumps(dump)
         except Exception, e:

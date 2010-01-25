@@ -5,13 +5,49 @@
 {% endif %}
 
 {% if faved %}
-<p class="success">Yay! ... has been faved.</p>
+<div id="okay">
+
+<img src="/images/egg.gif" width="80" height="62" style="float:left;margin-right:30px;"/>
+{% ifequal fave.category 'comments' %}
+<h3>Woo hoo! You faved that comment!!</h3>
+{% endifequal %}
+
+{% ifequal fave.category 'galleries' %}
+<h3>Woo hoo! You faved that gallery!!</h3>
+{% endifequal %}
+
+{% ifequal fave.category 'sets' %}
+<h3>Woo hoo! You faved that set!!</h3>
+{% endifequal %}
+
+{% ifequal fave.category 'collections' %}
+<h3>Woo hoo! You faved that collections!!</h3>
+{% endifequal %}
+
+<br clear="all" />
+<script type="text/javascript">
+$('#okay').fadeOut(3000, function() {} );
+</script>
+</div>
+
 {% endif %}
 
-<form method="POST" style="margin-top:50px;">
-	<input type="text" size="40" value="{{ url|escape }}" name="url" style="font-size:1.5em;border:10px solid pink;color:darkslategrey;padding:10px;font-weight:700;background-color:beige;" />
+<form method="POST" style="margin-top:40px;">
+	<input type="text" size="40%" value="{% if faved %}{{ fave.url|escape }}{% else %}{{ url|escape }}{% endif %}" name="url" style="font-size:1.25em;border:10px solid pink;color:#ff33cc;padding:20px;font-weight:500;background-color:#fAFAD2;" />
 	<input type="hidden" name="crumb" value="{{ fave_crumb|escape }}" />
-	<input type="submit" value="FAVE THIS" style="font-size:1.5em; border:10px solid pink;padding:10px;margin-left:15px;font-weight:700;" />
+	<input type="submit" value="FAVE THIS" style="font-size:1.25em; border:10px solid pink;padding:20px;margin-left:15px;font-weight:700;color:#3399cc;background-color:#FAFAD2;" />
 </form>
+
+<p style="color:#adadad;font-size:11px;">Paste a URL into the box to fave it.</p>
+
+<div style="font-size:11px;color:#666;margin-top:50px;">
+
+<ul style="line-height:18px;list-style-type:none;padding:0;">
+<li>All faves are public.</li>
+<li>There is <a href="/faves">a page with recently faved items</a>.</li>
+<li>There is <a href="faves/me">a page with all your faves</a>.</li>
+<li>You can <a href="/export">export all of your faves</a>.</li>
+</ul>
+</div>
 
 {% include "inc_foot.html" %}
