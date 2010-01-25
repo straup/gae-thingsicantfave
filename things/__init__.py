@@ -51,6 +51,9 @@ class Request (FlickrAppRequest) :
         if not obj.hostname in valid_hosts:
             return None
 
+        if obj.hostname == 'flickr.com':
+            url = url.replace('flickr.com', 'www.flickr.com')
+
         path = obj.path
 
         if path.startswith("/"):
