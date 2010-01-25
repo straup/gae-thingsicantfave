@@ -88,10 +88,11 @@ class FavedBy(things.Request):
         if who == 'me':
 
             if not self.check_logged_in(self.min_perms) :
-                self.display("main_logged_out.html")
+                self.redirect('/faves')
                 return
 
             creator_nsid = self.user.nsid
+
         else:
 
             if who.rfind("@N") > 0:
