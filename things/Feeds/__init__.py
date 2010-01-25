@@ -2,12 +2,19 @@ import things
 import things.Faves
 from ext.PyRSS2Gen import RSS2, RSSItem, Guid
 
+import urllib
 import StringIO
 import datetime
 
 class Syndicate (things.Request):
 
     def get_recent(self, who=None, what=None):
+
+        if who:
+            who = urllib.unquote(who)
+
+        if what:
+            what = urllib.unquote(what)
 
         if who:
 

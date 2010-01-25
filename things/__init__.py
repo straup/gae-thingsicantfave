@@ -5,6 +5,7 @@ import urlparse
 import re
 
 re_comment = re.compile(r'comment\d+')
+re_nsid = re.compile(r'\d+@N\d+')
 
 class Request (FlickrAppRequest) :
 

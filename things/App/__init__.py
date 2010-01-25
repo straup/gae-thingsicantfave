@@ -1,11 +1,10 @@
 import things
 import things.Faves
-import re
+
+import urllib
 
 import logging
 logging.basicConfig(level=logging.INFO)
-
-re_nsid = re.compile(r'\d+@N\d+')
 
 class Main (things.Request):
 
@@ -94,6 +93,12 @@ class FavedBy(things.Request):
 
         self.check_logged_in(self.min_perms)
         creator_nsid = None
+
+        if who:
+            who = urllib.unquote(who)
+
+        if what:
+            what = urllib.unquote(what)
 
         if who == 'me':
 
