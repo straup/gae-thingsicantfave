@@ -5,6 +5,7 @@ from google.appengine.ext import webapp
 
 import things.App
 import things.Auth
+import things.Export
 
 if __name__ == '__main__':
 
@@ -12,6 +13,7 @@ if __name__ == '__main__':
     ('/', things.App.Main),
     (r'/faves/?$', things.App.RecentFaves),
     (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.FavedBy),
+    ('/export', things.Export.JSON),
     ('/signout', things.Auth.Signout),
     ('/signin', things.Auth.Signin),
     ('/auth', things.Auth.TokenDance),
