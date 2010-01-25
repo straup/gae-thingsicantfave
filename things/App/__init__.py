@@ -58,10 +58,26 @@ class Main (things.Request):
         self.display('main_logged_in.html')
         return
 
-class Faves(things.Request):
+class RecentFaves(things.Request):
 
     def get(self, who=None, what=None):
 
+        self.check_logged_in(self.min_perms)
+
+        faves = things.Faves.recently_faved()
+        faves = faves.fetch(20)
+
+        self.prepare_faves(faves)
+
+        self.assign('faves', faves)
+        self.display('recently_faved.html')
+        return
+
+class FavedBy(things.Request):
+
+    def get(self, who=None, what=None):
+
+        self.check_logged_in(self.min_perms)
         creator_nsid = None
 
         if who == 'me':
@@ -83,29 +99,8 @@ class Faves(things.Request):
         self.assign("count_faves", faves.count())
 
         faves = faves.fetch(100)
-
-        for f in faves:
-
-            if self.user and self.user.nsid == f.creator_nsid:
-                f.creator = 'you'
-            else:
-                creator = self.flickr_get_user_info(f.creator_nsid)
-                f.creator = creator['username']['_content']
-
-            if self.user and self.user.nsid == f.owner_nsid:
-                f.owner = 'you'
-            else:
-                owner = self.flickr_get_user_info(f.owner_nsid)
-                f.owner = owner['username']['_content']
-
-            if f.commentor_nsid:
-
-                if self.user and self.user.nsid == f.commentor_nsid:
-                    f.commentor = 'you'
-                else:
-                    commentor = self.flickr_get_user_info(f.commentor_nsid)
-                    f.commentor = commentor['username']['_content']
+        self.prepare_faves(faves)
 
         self.assign('faves', faves)
-        self.display('faves.html')
+        self.display('faved_by.html')
         return

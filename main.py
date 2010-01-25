@@ -10,7 +10,8 @@ if __name__ == '__main__':
 
   handlers = [
     ('/', things.App.Main),
-    (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.Faves),
+    (r'/faves/?$', things.App.RecentFaves),
+    (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.FavedBy),
     ('/signout', things.Auth.Signout),
     ('/signin', things.Auth.Signin),
     ('/auth', things.Auth.TokenDance),

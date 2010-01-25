@@ -101,6 +101,30 @@ class Request (FlickrAppRequest) :
 
         return None
 
+    def prepare_faves(self, faves):
+
+        for f in faves:
+
+            if self.user and self.user.nsid == f.creator_nsid:
+                f.creator = 'you'
+            else:
+                creator = self.flickr_get_user_info(f.creator_nsid)
+                f.creator = creator['username']['_content']
+
+            if self.user and self.user.nsid == f.owner_nsid:
+                f.owner = 'you'
+            else:
+                owner = self.flickr_get_user_info(f.owner_nsid)
+                f.owner = owner['username']['_content']
+
+            if f.commentor_nsid:
+
+                if self.user and self.user.nsid == f.commentor_nsid:
+                    f.commentor = 'you'
+                else:
+                    commentor = self.flickr_get_user_info(f.commentor_nsid)
+                    f.commentor = commentor['username']['_content']
+
     def find_user(self, name):
 
         memkey = "%s_%s" % ('flickr.urls.lookupUser', name)

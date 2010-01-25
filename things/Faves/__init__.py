@@ -22,6 +22,13 @@ def fave_thing(args):
     thing.put()
     return thing
 
+def recently_faved():
+
+    gql = "SELECT * FROM dbFaves ORDER BY date_created DESC"
+    res = db.GqlQuery(gql)
+
+    return res
+
 def faves_for_creator(owner_nsid, category=None):
 
     params = [ owner_nsid ]
