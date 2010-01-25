@@ -1,0 +1,21 @@
+{% include "inc_head.html" %}
+
+<h2>Ack! There was a problem doing the sign-up dance!!</h2>
+
+{% ifequal error 'no_new_users' %}
+	<p>New user signups are not currently being accepted.</p>
+{% endifequal %}
+
+{% ifequal error 'api_error' %}
+	<p>The Flickr API is being cranky and returned an error.</p>
+{% endifequal %}
+
+{% ifequal error 'app_error' %}
+	<p>Contacts Who've Faved is being cranky and returned an error: <q>{{ error_message|escape }}</q></p>
+{% endifequal %}
+
+{% ifequal error 'unknown' %}
+	<p>INVISIBLE ERROR CAT HISSES AT YOU! ({{ error_message|escape }})</p>
+{% endifequal %}
+
+{% include "inc_foot.html" %}

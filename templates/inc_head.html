@@ -1,0 +1,50 @@
+<html>
+	<head>
+            <title>things I can't fave {% if page_title %}{{ page_title|escape }}{% endif %}</title>
+
+{% if browser.mobile %}
+            <link rel="stylesheet" href="/css/mobile.css" type="text/css" />
+{% else %}
+            <link rel="stylesheet" href="/css/main.css" type="text/css" />
+{% endif %}
+
+{% if user.username %}
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Cache-Control" content="no-cache">
+            <meta http-equiv="Expires" content="Sat, 01 Dec 2001 00:00:00 GMT">
+	    <meta http-equiv="refresh" content="{{ refresh|escape }}" />
+{% endif %}
+
+{% if browser.iphone %}
+            <meta name="viewport" content="width=340" />
+{% endif %}
+
+        </head>
+        <body>
+
+            <div id="whoami" style="background-color:beige;opacity:.85;padding-left:25px;">
+{% if browser.mobile %}
+
+{% else %}
+            {% if user.username %}
+                You are logged in with your <a href="http://www.flickr.com/photos/{% ifequal user.path_alias "" %}{{ user.nsid|escape }}{% else %}{{ user.path_alias|escape }}{% endifequal %}/" class="fl_username">{{ user.username|escape }}</a> Flickr account
+
+                <form method="POST" action="/signout" id="signout">
+                  <input type="hidden" name="crumb" value="{{ logout_crumb|escape }}" />
+                  <input type="submit" value="sign out" />
+                </form>
+
+            {% else %}
+
+                <span style="margin-right:20px;">make it so &rarr;</span>
+
+                <form method="GET" action="/signin" id="signin">
+                  <input type="hidden" name="crumb" value="{{ login_crumb|escape }}" />
+                  <input type="submit" value="sign in" />
+                </form>
+            {% endif %}
+{% endif %}
+            </div>
+            <br clear="all" />
+
+            <div id="main">

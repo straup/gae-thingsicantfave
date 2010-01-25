@@ -1,0 +1,14 @@
+{% include "inc_head.html" %}
+
+<h2>Are you sure you want to sign out of contacts who've faved?</h2>
+
+<div id="signout">
+                <form method="POST" action="/signout" style="display:inline;">
+                  <input type="hidden" name="crumb" value="{{ logout_crumb|escape }}" />
+                  <input type="submit" value="yes please, sign me out" class="submit" />
+                </form>
+</div>
+
+<p>Or just go back to your <a href="/">recent uploads page.</p>
+
+{% include "inc_foot.html" %}

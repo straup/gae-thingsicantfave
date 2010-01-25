@@ -1,0 +1,61 @@
+{% include "inc_head.html" %}
+
+{% ifequal count_faves 0 %}
+
+{% ifequal context None %}
+... has not faved anything!
+{% else %}
+
+{% ifequal context 'galleries' %}
+... has not faved any galleries.
+{% endifequal %}
+
+{% ifequal context 'comments' %}
+... has not faved any comments.
+{% endifequal %}
+
+{% endifequal %}
+
+{% else %}
+
+{% ifequal context None %}
+<h2>... has faved {{ count_faves|escape }} thing</h2>
+{% else %}
+
+{% ifequal context 'galleries' %}
+<h2>... has faved {{ count_faves|escape }} galleries</h2>
+{% endifequal %}
+
+{% ifequal context 'comments' %}
+<h2>... has faved {{ count_faves|escape }} comments</h2>
+{% endifequal %}
+
+{% endifequal %}
+
+<ul>
+{% for f in faves %}
+
+{% ifequal f.category 'comments' %}
+
+{% if f.commentor_nsid %}
+
+<li>A <a href="{{ f.url|escape }}">comment</a> by <a href="http://www.flickr.com/photos/{{ f.commentor_nsid|escape }}">{{ f.commentor|escape }}</a> on {{ f.date_created|escape }}</li>
+
+{% else %}
+
+<li>A <a href="{{ f.url|escape }}">comment</a> on one of <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}">{{ f.owner|escape }}</a>'s photos on {{ f.date_created|escape }}</li>
+
+{% endif %}
+
+{% else %}
+
+<li>A <a href="{{ f.url|escape }}">{{ f.category|escape }}</a> by <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}">{{ f.owner|escape }}</a> on {{ f.date_created|escape }}</li>
+
+{% endifequal %}
+
+{% endfor %}
+</ul>
+
+{% endifequal %}
+
+{% include "inc_foot.html" %}
