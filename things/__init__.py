@@ -1,10 +1,6 @@
 from FlickrApp.Handlers import FlickrAppRequest
 from config import config
 
-from google.appengine.api import memcache
-from django.utils import simplejson
-import urllib
-import urllib2
 import urlparse
 import re
 
@@ -153,34 +149,8 @@ class Request (FlickrAppRequest) :
 
     def find_user(self, name):
 
-        memkey = "%s_%s" % ('flickr.urls.lookupUser', name)
-        cache = memcache.get(memkey)
+        method = 'flickr.urls.lookupUser'
+        args = { 'url' : 'http://www.flickr.com/photos/%s' % name }
 
-        if cache :
-            return cache
-
-        # this a hack to account for the fact that Flickr.API
-        # doesn't seem to play nicely with methods that have
-        # a 'url' arguments. Specifically, the urllib* libraries
-        # think that's what they need to fetch...
-
-        url = 'http://www.flickr.com/photos/%s' % name
-
-        # FIX ME
-
-        enc_url = url
-        enc_apikey = config['flickr_apikey']
-
-        req = 'http://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=%s&url=%s&format=json&nojsoncallback=1' % (enc_apikey, enc_url)
-
-        try:
-            res = urllib2.urlopen(req)
-            json = simplejson.loads(res.read())
-        except Exception, e:
-            return None
-
-        if json['stat'] != 'ok':
-            return None
-
-        memcache.add(memkey, json, 1209600)
+        json = self.proxy_api_call(method, args, 1209600)
         return json
