@@ -156,6 +156,13 @@ class Request (FlickrAppRequest) :
                     commentor = self.flickr_get_user_info(f.commentor_nsid)
                     f.commentor = commentor['username']['_content']
 
+    def is_nsid(self, str):
+
+        if re_nsid.match(str):
+            return True
+
+        return False
+
     def find_user(self, name):
 
         method = 'flickr.urls.lookupUser'

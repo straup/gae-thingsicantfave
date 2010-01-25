@@ -11,7 +11,7 @@ class Syndicate (things.Request):
 
         if who:
 
-            if who.rfind("@N") > 0:
+            if self.is_nsid(who):
                 creator_nsid = who
             else:
                 creator = self.find_user(who)

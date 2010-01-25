@@ -1,5 +1,11 @@
 import things
 import things.Faves
+import re
+
+import logging
+logging.basicConfig(level=logging.INFO)
+
+re_nsid = re.compile(r'\d+@N\d+')
 
 class Main (things.Request):
 
@@ -99,10 +105,11 @@ class FavedBy(things.Request):
 
         else:
 
-            if who.rfind("@N") > 0:
+            if self.is_nsid(who):
                 creator_nsid = who
             else:
                 creator = self.find_user(who)
+                logging.info("%s: %s" % (who, creator))
                 creator_nsid = creator['user']['id']
 
         faves = things.Faves.faves_for_creator(creator_nsid, what)
