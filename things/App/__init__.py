@@ -136,6 +136,7 @@ class FavedBy(things.Request):
         if what:
             rss_feed += "/%s" % what
 
+        self.assign("who_nsid", creator_nsid)
         self.assign("rss_feed", rss_feed)
 
         self.assign('faves', faves)

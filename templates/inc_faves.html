@@ -5,19 +5,25 @@
 
 {% if f.commentor_nsid %}
 
-<li><a href="/faves/{{ f.creator_nsid|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> by <a href="http://www.flickr.com/photos/{{ f.commentor_nsid|escape }}" target="_who">{{ f.commentor|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
+<li><a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> by <a href="http://www.flickr.com/photos/{{ f.commentor_nsid|escape }}" target="_who">{{ f.commentor|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
 
 {% else %}
 
-<li><a href="/faves/{{ f.creator_nsid|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> on one of <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}" target="_who">{{ f.owner|escape }}</a>'s photos <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
+<li><a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> on one of <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}" target="_who">{{ f.owner|escape }}</a>'s photos <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
 
 {% endif %}
 
 {% else %}
 
-<li><a href="/faves/{{ f.creator_nsid|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> by <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}" target="_who">{{ f.owner|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
+<li><a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> by <a href="http://www.flickr.com/photos/{{ f.owner_nsid|escape }}" target="_who">{{ f.owner|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span></li>
 
 {% endifequal %}
 
 {% endfor %}
+
+{% if rss_feed %}
+<li style="margin-top:20px;font-size:11px;"><a href="{{ rss_feed }}" style="color:#FF0084;text-decoration:none;background-color:pink;padding:10px;">rss</a></li>
+{% endif %}
 </ul>
+
+

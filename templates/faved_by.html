@@ -55,8 +55,8 @@
 {% else %}
 
 {% ifequal what 'galleries' %}
-<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
 {% ifequal who 'You' %}
+<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
 {% else %}
 <h2>{{ who|escape}} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
 {% endifequal %}
@@ -64,17 +64,17 @@
 
 {% ifequal what 'sets' %}
 {% ifequal who 'You' %}
-<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
+<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}set{% else %}sets{% endifequal %}</h2>
 {% else %}
-<h2>{{ who|escape}} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
+<h2>{{ who|escape}} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}set{% else %}sets{% endifequal %}</h2>
 {% endifequal %}
 {% endifequal %}
 
 {% ifequal what 'collections' %}
 {% ifequal who 'You' %}
-<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
+<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}collection{% else %}collections{% endifequal %}</h2>
 {% else %}
-<h2>{{ who|escape}} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}gallery{% else %}galleries{% endifequal %}</h2>
+<h2>{{ who|escape}} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}collection{% else %}collections{% endifequal %}</h2>
 {% endifequal %}
 {% endifequal %}
 
@@ -87,6 +87,18 @@
 {% endifequal %}
 
 {% endifequal %}
+
+<div style="font-size:11px;margin-top:-15px;margin-bottom:30px;color:#666;">
+{% ifequal what None %}
+see faves <a href="/faves">from everyone</a>
+{% else %}
+{% ifequal who 'You' %}
+see all <a href="/faves/me">your faves</a>
+{% else %}
+See all of <a href="/faves/{{ who_nsid|escape }}">{{ who|escape }}'s faves</a>
+{% endifequal %}
+{% endifequal %}
+</div>
 
 {% include "inc_faves.html" %}
 
