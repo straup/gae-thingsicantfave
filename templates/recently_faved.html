@@ -2,6 +2,12 @@
 
 <h2>Recently faved</h2>
 
+{% if user.username %}
+<div style="font-size:11px;margin-top:-15px;margin-bottom:30px;color:#666;">
+see all <a href="/faves/me">your faves</a>
+</div>
+{% endif %}
+
 {% include "inc_faves.html" %}
 
 {% include "inc_foot.html" %}
