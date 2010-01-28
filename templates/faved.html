@@ -1,0 +1,107 @@
+{% include "inc_head.html" %}
+
+{% ifequal count_faves 0 %}
+
+{% ifequal what None %}
+{% ifequal who 'You' %}
+<h3>Alas. No one has faved any of your Flickr stuff yet.</h3>
+{% else %}
+<h3>No one has faved any of {{ who|escape }}'s stuff yet!</h3>
+{% endifequal %}
+{% else %}
+
+{% ifequal what 'galleries' %}
+{% ifequal who 'You' %}
+<h3>None of your galleries have been faved yet.</h3>
+{% else %}
+<h3>None of {{ who|escape }}'s galleries have been faved.</h3>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'sets' %}
+{% ifequal who 'You' %}
+<h3>None of your sets have been faved yet.</h3>
+{% else %}
+<h3>None of {{ who|escape }}'s sets have been faved.</h3>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'collections' %}
+{% ifequal who 'You' %}
+<h3>None of your collections haved been faved yet.</h3>
+{% else %}
+<h3>None of {{ who|escape }}'s collections haved been faved.</h3>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'comments' %}
+{% ifequal who 'You' %}
+<h3>None of your comments have been faved yet.</h3>
+{% else %}
+<h3>None of {{ who|escape }}'s comments haved been faved.</h3>
+{% endifequal %}
+{% endifequal %}
+
+{% endifequal %}
+
+{% else %}
+
+{% ifequal what None %}
+{% ifequal who 'You' %}
+<h2>You have faved {{ count_faves|escape }} thing{% ifequal count_faves 1 %}{% else %}s{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape}}'s stuff has been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% endifequal %}
+{% else %}
+
+{% ifequal what 'galleries' %}
+{% ifequal who 'You' %}
+<h2>Your galleries have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape}}'s galleries have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'sets' %}
+{% ifequal who 'You' %}
+<h2>Your sets have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape}}'s sets have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'collections' %}
+{% ifequal who 'You' %}
+<h2>Your collections have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape}}'s collections have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'comments' %}
+{% ifequal who 'You' %}
+<h2>Your comments have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape}}'s comments have been faved {% ifequal count_faves 1 %}once{% else %}{{ count_faves|escape }} times{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
+{% endifequal %}
+
+<div style="font-size:11px;margin-top:-15px;margin-bottom:30px;color:#666;">
+{% ifequal what None %}
+see faves <a href="/faves">from everyone</a>
+{% else %}
+{% ifequal who 'You' %}
+see all <a href="/faved/me">your faved stuff</a>
+{% else %}
+See all of <a href="/faved/{{ who_nsid|escape }}">{{ who|escape }}'s faved stuff</a>
+{% endifequal %}
+{% endifequal %}
+</div>
+
+{% include "inc_faves.html" %}
+
+{% endifequal %}
+
+{% include "inc_foot.html" %}

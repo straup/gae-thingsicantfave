@@ -13,12 +13,32 @@ indexes:
 - kind: dbFaves
   properties:
   - name: category
+  - name: commentor_nsid
+  - name: date_created
+    direction: desc
+
+- kind: dbFaves
+  properties:
+  - name: category
   - name: creator_nsid
   - name: date_created
     direction: desc
 
 - kind: dbFaves
   properties:
+  - name: category
+  - name: owner_nsid
+  - name: date_created
+    direction: desc
+
+- kind: dbFaves
+  properties:
   - name: creator_nsid
+  - name: date_created
+    direction: desc
+
+- kind: dbFaves
+  properties:
+  - name: owner_nsid
   - name: date_created
     direction: desc

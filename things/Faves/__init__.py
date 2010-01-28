@@ -44,5 +44,22 @@ def faves_for_creator(owner_nsid, category=None):
     res = db.GqlQuery(gql, *params)
     return res
 
-def faves_for_owner(owner_nsid, category=None):
-    pass
+def faves_for_owner(owner_nsid, category=None, is_commentor=False):
+
+    params = [ owner_nsid]
+
+    gql = "SELECT * FROM dbFaves"
+
+    if is_commentor:
+        gql += " WHERE commentor_nsid = :1"
+    else:
+        gql += " WHERE owner_nsid = :1"
+
+    if category:
+        gql += " AND category = :2"
+        params.append(category)
+
+    gql += " ORDER BY date_created DESC"
+
+    res = db.GqlQuery(gql, *params)
+    return res

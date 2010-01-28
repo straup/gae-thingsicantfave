@@ -142,3 +142,64 @@ class FavedBy(things.Request):
         self.assign('faves', faves)
         self.display('faved_by.html')
         return
+
+class Faved(things.Request):
+
+    def get(self, who=None, what=None):
+
+        self.check_logged_in(self.min_perms)
+        owner_nsid = None
+
+        if who:
+            who = urllib.unquote(who)
+
+        if what:
+            what = urllib.unquote(what)
+
+        is_commentor = False
+
+        if what == 'comments':
+            is_commentor = True
+
+        if who == 'me':
+
+            if not self.check_logged_in(self.min_perms) :
+                self.redirect('/faves')
+                return
+
+            owner_nsid = self.user.nsid
+
+        else:
+
+            if self.is_nsid(who):
+                owner_nsid = who
+            else:
+                creator = self.find_user(who)
+                logging.info("%s: %s" % (who, creator))
+                owner_nsid = creator['user']['id']
+
+        faves = things.Faves.faves_for_owner(owner_nsid, what, is_commentor)
+        self.assign("count_faves", faves.count())
+
+        faves = faves.fetch(100)
+        self.prepare_faves(faves)
+
+        if self.user and owner_nsid == self.user.nsid:
+            self.assign('who', 'You')
+        else:
+            user = self.flickr_get_user_info(owner_nsid)
+            self.assign('who', user['username']['_content'])
+
+        self.assign('what', what)
+
+        rss_feed = "http://thingsicantfave.appspot.com/rss/faved/%s" % owner_nsid
+
+        if what:
+            rss_feed += "/%s" % what
+
+        self.assign("who_nsid", owner_nsid)
+        self.assign("rss_feed", rss_feed)
+
+        self.assign('faves', faves)
+        self.display('faved.html')
+        return

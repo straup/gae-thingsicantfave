@@ -12,10 +12,15 @@ if __name__ == '__main__':
 
   handlers = [
     ('/', things.App.Main),
-    (r'/faves/?$', things.App.RecentFaves),
+
+    (r'/fave(?:s|d)/?$', things.App.RecentFaves),
     (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.FavedBy),
+    (r'/faved/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.Faved),
+
     (r'/rss/faves/?$', things.Feeds.RSS),
     (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.Feeds.RSS),
+    # (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.Feeds.RSS),
+
     ('/export', things.Export.JSON),
     ('/signout', things.Auth.Signout),
     ('/signin', things.Auth.Signin),
