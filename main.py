@@ -3,10 +3,11 @@
 import wsgiref.handlers
 from google.appengine.ext import webapp
 
+import things.API
 import things.App
 import things.Auth
-import things.Feeds
 import things.Export
+import things.Feeds
 
 if __name__ == '__main__':
 
@@ -19,12 +20,13 @@ if __name__ == '__main__':
 
     (r'/rss/faves/?$', things.Feeds.RSS),
     (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.Feeds.RSS),
-    # (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.Feeds.RSS),
 
     ('/export', things.Export.JSON),
     ('/signout', things.Auth.Signout),
     ('/signin', things.Auth.Signin),
     ('/auth', things.Auth.TokenDance),
+
+    ('/api', things.API.Dispatch),
 ]
 
   application = webapp.WSGIApplication(handlers, debug=False)

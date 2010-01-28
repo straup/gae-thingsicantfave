@@ -29,6 +29,14 @@ def recently_faved():
 
     return res
 
+def fetch_by_key(key):
+
+    db_key = db.Key(key)
+
+    gql = "SELECT * FROM dbFaves WHERE key= :1"
+    res = db.GqlQuery(gql, db_key)
+    return ref.fetch()
+
 def faves_for_creator(owner_nsid, category=None):
 
     params = [ owner_nsid ]
