@@ -1,12 +1,3 @@
-.buddyicon {
-             opacity:0;
-             border:none;
-}
-
-.buddyicon:hover {
-                    opacity:1;
-}
-
 /* elements */
 
 body {
@@ -31,6 +22,16 @@ h3 {
 }
 
 /* ids */
+
+.delete_fave{
+    font-size:small;
+    margin-left:25px;
+    margin-top:10px;
+}
+
+.delete_fave img{
+    border:none;
+}
 
 #example_image {
                  margin-left:25px;
@@ -168,11 +169,11 @@ h3 {
                       color:#666;
 }
 
-.count_thumbs_hex a strong{ 
+.count_thumbs_hex a strong{
                             font-size: 12px;
 }
 
-.error { 
+.error {
          font-size:1.25em;
          color:red;
          line-height:25px;

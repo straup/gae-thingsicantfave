@@ -140,22 +140,31 @@ class Request (FlickrAppRequest) :
             if self.user and self.user.nsid == f.creator_nsid:
                 f.creator = 'You'
             else:
-                creator = self.flickr_get_user_info(f.creator_nsid)
-                f.creator = creator['username']['_content']
+                try:
+                    creator = self.flickr_get_user_info(f.creator_nsid)
+                    f.creator = creator['username']['_content']
+                except Exception, e:
+                    f.creator = 'someone'
 
             if self.user and self.user.nsid == f.owner_nsid:
                 f.owner = 'You'
             else:
-                owner = self.flickr_get_user_info(f.owner_nsid)
-                f.owner = owner['username']['_content']
+                try:
+                    owner = self.flickr_get_user_info(f.owner_nsid)
+                    f.owner = owner['username']['_content']
+                except Exception, e:
+                    f.owner = 'someone'
 
             if f.commentor_nsid:
 
                 if self.user and self.user.nsid == f.commentor_nsid:
                     f.commentor = 'You'
                 else:
-                    commentor = self.flickr_get_user_info(f.commentor_nsid)
-                    f.commentor = commentor['username']['_content']
+                    try:
+                        commentor = self.flickr_get_user_info(f.commentor_nsid)
+                        f.commentor = commentor['username']['_content']
+                    except Exception, e:
+                        f.commentor = 'someone'
 
     def is_nsid(self, str):
 

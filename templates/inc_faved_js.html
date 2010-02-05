@@ -1,0 +1,15 @@
+{% if delete_crumb %}
+<script type="text/javascript" src="/javascript/flickrapp-api.js"></script>
+<script type="text/javascript" src="/javascript/things.js"></script>
+
+<script type="text/javascript">
+
+  var things_args = {
+  	'host' : '{{ host_url }}',
+  	'delete_crumb' : '{{ delete_crumb|escape }}',
+  };
+
+  window.things = new info.aaronland.things.Faves(things_args);
+
+</script>
+{% endif %}

@@ -33,9 +33,11 @@ def fetch_by_key(key):
 
     db_key = db.Key(key)
 
-    gql = "SELECT * FROM dbFaves WHERE key= :1"
+    gql = "SELECT * FROM dbFaves WHERE __key__= :1"
     res = db.GqlQuery(gql, db_key)
-    return ref.fetch()
+
+    wtf = res.fetch(1)
+    return wtf[0]
 
 def faves_for_creator(owner_nsid, category=None):
 

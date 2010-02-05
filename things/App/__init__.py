@@ -83,6 +83,10 @@ class RecentFaves(things.Request):
 
         self.assign("rss_feed", "http://thingsicantfave.appspot.com/rss/faves")
 
+        if self.user:
+            delete_crumb = self.generate_crumb(self.user, 'method=delete')
+            self.assign('delete_crumb', delete_crumb)
+
         self.assign('faves', faves)
         self.display('recently_faved.html')
         return
@@ -125,6 +129,10 @@ class FavedBy(things.Request):
 
         if self.user and creator_nsid == self.user.nsid:
             self.assign('who', 'You')
+
+            delete_crumb = self.generate_crumb(self.user, 'method=delete')
+            self.assign('delete_crumb', delete_crumb)
+
         else:
             user = self.flickr_get_user_info(creator_nsid)
             self.assign('who', user['username']['_content'])
@@ -186,6 +194,10 @@ class Faved(things.Request):
 
         if self.user and owner_nsid == self.user.nsid:
             self.assign('who', 'You')
+
+            delete_crumb = self.generate_crumb(self.user, 'method=delete')
+            self.assign('delete_crumb', delete_crumb)
+
         else:
             user = self.flickr_get_user_info(owner_nsid)
             self.assign('who', user['username']['_content'])
