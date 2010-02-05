@@ -1,5 +1,3 @@
-{% ifequal user.nsid '35034348999@N01' %}
 {% ifequal f.creator_nsid user.nsid %}
-  <span class="delete_fave"><a href="#" onclick="javascript:if (! confirm('Are you sure you want to delete this fave?')){ return false; } window.things.delete('fave_{{ f.key|escape }}');return false;"><img src="/images/knife.png" height="20" width="20" /></a></span>
-{% endifequal %}
+  <span class="delete_fave"><a href="#" onclick="javascript:if (! confirm('Are you sure you want to delete this fave?')){ return false; } window.things.delete('fave_{{ f.key|escape }}');return false;" alt="delete this fave" ><img src="/images/knife.png" height="20" width="20" title="delete this fave" /></a></span>
 {% endifequal %}

@@ -20,9 +20,11 @@ class Dispatch (things.Request, FlickrAppAPI) :
 	    self.api_error(403)
 	    return
 
+        """
         if self.user.nsid != '35034348999@N01':
             self.api_error(403)
             return
+        """
 
 	required = ('crumb', 'fave_id')
 
