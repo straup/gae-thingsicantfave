@@ -29,7 +29,6 @@ info.aaronland.things.Faves.prototype.delete = function(fave_id){
 	li.fadeOut();
 
 	var remaining = rsp['count'];
-	console.log(remaining);
     };
 
     var doThisIfNot = function (rsp){
