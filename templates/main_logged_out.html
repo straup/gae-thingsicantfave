@@ -6,12 +6,15 @@
 
 <p style="font-size:small;">This is a Very Simple&trade; web application that allows you to favourite things you can't otherwise fave on Flickr. Things like sets, collections, galleries and comments.</p>
 
+{% if browser.mobile %}
+{% else %}
 <ul style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:50px;">
 <li>All faves are public.</li>
 <li>There is <a href="/faves">a page with recently faved items</a>.</li>
 <li>There is a page with all your faves.</li>
 <li>You can export all of your faves.</li>
 </ul>
+{% endif %}
 
 <p id="getstarted"><strong><a href="/signin">&rarr; Sign in to get started</a></strong></p>
 

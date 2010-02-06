@@ -110,15 +110,16 @@
 
 	{% ifequal what 'comments' %}
 	{% else %}
-		&#160;&#8212;&#160;
-		<span style="font-style:italic;">
+		<span>
 		{% ifequal who 'You' %}
-			due to a feature-bug in the way AppEngine stores data <a href="/faved/me/comments/">your faved comments</a> are displayed over here.
+			...and <a href="/faved/me/comments/">comments</a>
 		{% else %}
-			due to a feature-bug in the way AppEngine stores data <a href="/faved/{{ who_nsid|escape }}/comments/">{{ who|escape }}'s faved comments</a> are displayed over here.
+			...and <a href="/faved/{{ who_nsid|escape }}/comments/">comments</a>
 		{% endifequal %}
 		</span>
 	{% endifequal %}
+
+	&#160;/&#160;<a href="/">home</a>
 	</div>
 
 	{% include "inc_faves.html" %}

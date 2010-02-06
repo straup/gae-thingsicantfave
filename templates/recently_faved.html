@@ -3,11 +3,14 @@
 
 <h2>Recently faved</h2>
 
-{% if user.username %}
 <div style="font-size:11px;margin-top:-15px;margin-bottom:30px;color:#666;">
+{% if user.username %}
 see all <a href="/faves/me">your faves</a>
-</div>
+&#160;/&#160;<a href="/">home</a>
+{% else %}
+<a href="/">home</a>
 {% endif %}
+</div>
 
 {% include "inc_faves.html" %}
 

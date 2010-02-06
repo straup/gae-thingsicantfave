@@ -6,18 +6,18 @@
 
 {% if f.commentor_nsid %}
 
-<li id="fave_{{ f.key|escape }}">
+<li id="fave_{{ f.key|escape }}" class="fave">
 
-<a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> by <a href="/faved/{{ f.commentor_nsid|escape }}/comments/">{{ f.commentor|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span>
+<a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> by <a href="/faved/{{ f.commentor_nsid|escape }}/comments/">{{ f.commentor|escape }}</a> <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
 
 {% include "inc_delete_fave.html" %}
 </li>
 
 {% else %}
 
-<li id="fave_{{ f.key|escape }}">
+<li id="fave_{{ f.key|escape }}" class="fave">
 
-<a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> on one of <a href="/faved/{{ f.commentor_nsid|escape }}/comments/">{{ f.owner|escape }}</a>'s photos <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span>
+<a href="/faves/{{ f.creator_nsid|escape }}/comments">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="comment">comment</a> on one of <a href="/faved/{{ f.commentor_nsid|escape }}/comments/">{{ f.owner|escape }}</a>'s photos <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
 
 {% include "inc_delete_fave.html" %}
 </li>
@@ -26,9 +26,9 @@
 
 {% else %}
 
-<li id="fave_{{ f.key|escape }}">
+<li id="fave_{{ f.key|escape }}" class="fave">
 
-  <a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> by <a href="/faved/{{ f.owner_nsid|escape }}/{{ f.category|escape }}/">{{ f.owner|escape }}</a> <span class="faved_when">on {{ f.date_created|date:"F d \a\t P"|escape }}</span>
+  <a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> by <a href="/faved/{{ f.owner_nsid|escape }}/{{ f.category|escape }}/">{{ f.owner|escape }}</a> <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
 
 {% include "inc_delete_fave.html" %}
 </li>
@@ -38,6 +38,7 @@
 {% endfor %}
 
 {% if rss_feed %}
-<li style="margin-top:20px;font-size:11px;"><a href="{{ rss_feed }}" style="color:#FF0084;text-decoration:none;background-color:pink;padding:10px;">rss</a></li>
+<li class="rss" style="margin-top:20px;font-size:11px;"><a href="{{ rss_feed }}" style="color:#FF0084;text-decoration:none;background-color:pink;padding:10px;">rss</a></li>
 {% endif %}
+
 </ul>

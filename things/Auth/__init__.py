@@ -1,6 +1,9 @@
 import things
 import FlickrApp
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
 class TokenDance (things.Request) :
 
   def get (self):
@@ -42,21 +45,27 @@ class Signout (things.Request) :
         if not self.check_logged_in(self.min_perms) :
             self.redirect("/")
 
+        logout_crumb = self.generate_crumb(self.user, 'method=logout')
+        self.assign('logout_crumb', logout_crumb)
+
         self.display("signout.html")
         return
 
     def post (self) :
 
         if not self.check_logged_in(self.min_perms) :
-            self.redirect("/")
+          # logging.error("can't sign out out: not signed in")
+          self.redirect("/")
 
         crumb = self.request.get('crumb')
 
         if not crumb :
-            self.redirect("/")
+          # logging.error("can't sign out out: no crumb")
+          self.redirect("/")
 
         if not self.validate_crumb(self.user, "logout", crumb) :
-            self.redirect("/")
+          # logging.error("can't sign out out: invalid crumb")
+          self.redirect("/")
 
         self.response.headers.add_header('Set-Cookie', 'ffo=')
         self.response.headers.add_header('Set-Cookie', 'fft=')

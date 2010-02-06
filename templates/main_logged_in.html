@@ -33,21 +33,30 @@ $('#okay').fadeOut(3000, function() {} );
 {% endif %}
 
 <form method="POST" style="margin-top:40px;">
-	<input type="text" size="40%" value="{% if faved %}{{ fave.url|escape }}{% else %}{{ url|escape }}{% endif %}" name="url" style="font-size:1.25em;border:10px solid pink;color:#ff33cc;padding:20px;font-weight:500;background-color:#fAFAD2;" />
 	<input type="hidden" name="crumb" value="{{ fave_crumb|escape }}" />
-	<input type="submit" value="FAVE THIS" style="font-size:1.25em; border:10px solid pink;padding:20px;margin-left:15px;font-weight:700;color:#3399cc;background-color:#FAFAD2;" />
+	<input type="text" {% if browser.mobile %}size="15"{% else %}size="40%"{% endif %} value="{% if faved %}{{ fave.url|escape }}{% else %}{{ url|escape }}{% endif %}" name="url" id="fave_input" />
+	<input type="submit" value="FAVE THIS" id="fave_submit" />
 </form>
 
 <p style="color:#adadad;font-size:11px;">Paste a URL into the box to fave it.</p>
 
 <div style="font-size:11px;color:#666;margin-top:50px;">
 
-<ul style="line-height:18px;list-style-type:none;padding:0;">
+<ul id="menu">
+{% if browser.mobile %}
+<li><a href="/faves">Recently faved items</a>.</li>
+<li><a href="faves/me">Your faved items</a>.</li>
+<li>All faves are public.</li>
+{% else %}
 <li>All faves are public.</li>
 <li>There is <a href="/faves">a page with recently faved items</a>.</li>
 <li>There is <a href="faves/me">a page with all your faves</a>.</li>
+
 <li>You can <a href="/export">export all of your faves</a>.</li>
+
 <li style="margin-top:15px;">You can also fave something by going to:<br />&#160;&#160;&#160;&#160;<a style="font-style:italic;" href="#" onclick="alert('Silly rabbit! You can\'t fave \'SOME_FLICKR_URL\'. You need to include a real-live Flickr URL.');return false;">http://thingsicantfave.appspot.com?url=SOME_FLICKR_URL</a></li>
+{% endif %}
+
 </ul>
 </div>
 

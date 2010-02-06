@@ -17,6 +17,10 @@
             <meta http-equiv="refresh" content="{{ refresh|escape }}" />
 {% endif %}
 
+{% if browser.iphone %}
+            <meta name="viewport" content="width=340" />
+{% endif %}
+
 {% if rss_feed %}
             <link rel="alternate" type="application/rdf+xml" title="things I can't fave RSS 2.0 feed" href="{{ rss_feed|escape }}"/>
 {% endif %}
@@ -24,6 +28,9 @@
         <body>
 
             <div id="whoami" style="background-color:beige;opacity:.85;padding-left:25px;">
+{% if browser.mobile %}
+	<strong>things</strong>{% if user.username %} / {{ user.username|escape }} / <a href="/signout">signout</a>{% endif %}
+{% else %}
 
             {% if user.username %}
                 You are logged in with your <a href="http://www.flickr.com/photos/{% ifequal user.path_alias "" %}{{ user.nsid|escape }}{% else %}{{ user.path_alias|escape }}{% endifequal %}/" class="fl_username">{{ user.username|escape }}</a> Flickr account
@@ -42,7 +49,7 @@
                   <input type="submit" value="sign in" />
                 </form>
             {% endif %}
-
+{% endif %}
             </div>
             <br clear="all" />
             <div id="main">
