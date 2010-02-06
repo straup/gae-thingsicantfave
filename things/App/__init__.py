@@ -51,6 +51,18 @@ class Main (things.Request):
             self.display('main_logged_in.html')
             return
 
+        if thing['category'] == 'comments':
+            if thing['commentor_nsid'] == self.user.nsid:
+                self.assign('error', 'is_own')
+                self.display('main_logged_in.html')
+                return
+        elif thing['owner_nsid'] == self.user.nsid:
+            self.assign('error', 'is_own')
+            self.display('main_logged_in.html')
+            return
+        else:
+            pass
+
         if things.Faves.has_faved(self.user.nsid, thing['url']):
             self.assign('error', 'already_faved')
             self.display('main_logged_in.html')

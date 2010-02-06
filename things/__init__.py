@@ -111,14 +111,15 @@ class Request (FlickrAppRequest) :
                 method = 'flickr.photos.comments.getList'
                 args = { 'photo_id' : parts[2] }
 
-                rsp = self.proxy_api_call(method, args, 86400)
+                # rsp = self.proxy_api_call(method, args, 300)
+                rsp = self.api_call(method, args)
 
                 for c in rsp['comments']['comment']:
                     if c['permalink'].endswith(comment_id):
                         data['commentor_nsid'] = c['author']
 
             except Exception, e:
-                pass
+                return None
 
             return data
 
