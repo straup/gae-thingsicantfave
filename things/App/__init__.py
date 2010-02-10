@@ -83,11 +83,13 @@ class Main (things.Request):
             try:
                 from google.appengine.api.labs import taskqueue
 
-                fave_id = 'fave_%s' % fave.key
+                fave_key = str(fave.key())
+                fave_id = 'fave_%s' % fave_key
+
                 task_url = '/queue/tweet?fave_id=%s' % fave_id
                 taskqueue.add(url=task_url, method='GET')
 
-                logging.info('Registed tweet task for key: %s' % fave.key)
+                logging.debug('Registed tweet task for key: %s' % fave_id)
 
             except Exception, e:
                 logging.error('Failed to schedule tweet: %s' % e)
