@@ -128,44 +128,47 @@ class Request (FlickrAppRequest) :
     def prepare_faves(self, faves):
 
         for f in faves:
+            self.prepare_fave(f)
 
-            if f.category == 'comments':
-                f.category_singular = 'comment'
-            elif f.category == 'galleries':
-                f.category_singular = 'gallery'
-            elif f.category == 'sets':
-                f.category_singular = 'set'
-            elif f.category == 'collections':
-                f.category_singular = 'collection'
+    def prepare_fave(self, f):
 
-            if self.user and self.user.nsid == f.creator_nsid:
-                f.creator = 'You'
+        if f.category == 'comments':
+            f.category_singular = 'comment'
+        elif f.category == 'galleries':
+            f.category_singular = 'gallery'
+        elif f.category == 'sets':
+            f.category_singular = 'set'
+        elif f.category == 'collections':
+            f.category_singular = 'collection'
+
+        if self.user and self.user.nsid == f.creator_nsid:
+            f.creator = 'You'
+        else:
+            try:
+                creator = self.flickr_get_user_info(f.creator_nsid)
+                f.creator = creator['username']['_content']
+            except Exception, e:
+                f.creator = 'someone'
+
+        if self.user and self.user.nsid == f.owner_nsid:
+            f.owner = 'You'
+        else:
+            try:
+                owner = self.flickr_get_user_info(f.owner_nsid)
+                f.owner = owner['username']['_content']
+            except Exception, e:
+                f.owner = 'someone'
+
+        if f.commentor_nsid:
+
+            if self.user and self.user.nsid == f.commentor_nsid:
+                f.commentor = 'You'
             else:
                 try:
-                    creator = self.flickr_get_user_info(f.creator_nsid)
-                    f.creator = creator['username']['_content']
+                    commentor = self.flickr_get_user_info(f.commentor_nsid)
+                    f.commentor = commentor['username']['_content']
                 except Exception, e:
-                    f.creator = 'someone'
-
-            if self.user and self.user.nsid == f.owner_nsid:
-                f.owner = 'You'
-            else:
-                try:
-                    owner = self.flickr_get_user_info(f.owner_nsid)
-                    f.owner = owner['username']['_content']
-                except Exception, e:
-                    f.owner = 'someone'
-
-            if f.commentor_nsid:
-
-                if self.user and self.user.nsid == f.commentor_nsid:
-                    f.commentor = 'You'
-                else:
-                    try:
-                        commentor = self.flickr_get_user_info(f.commentor_nsid)
-                        f.commentor = commentor['username']['_content']
-                    except Exception, e:
-                        f.commentor = 'someone'
+                    f.commentor = 'someone'
 
     def is_nsid(self, str):
 

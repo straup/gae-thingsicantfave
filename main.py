@@ -13,6 +13,7 @@ if __name__ == '__main__':
 
   handlers = [
     ('/', things.App.Main),
+    (r'/about/?$', things.App.About),
 
     (r'/fave(?:s|d)/?$', things.App.RecentFaves),
     (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.FavedBy),

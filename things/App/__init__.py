@@ -1,3 +1,5 @@
+from config import config
+
 import things
 import things.Faves
 
@@ -75,6 +77,20 @@ class Main (things.Request):
             self.assign('error', 'cannot_add')
             self.display('main_logged_in.html')
             return
+
+        if config['twitter_notify']:
+
+            try:
+                from google.appengine.api.labs import taskqueue
+
+                fave_id = 'fave_%s' % fave.key
+                task_url = '/queue/tweet?fave_id=%s' % fave_id
+                taskqueue.add(url=task_url, method='GET')
+
+                logging.info('Registed tweet task for key: %s' % fave.key)
+
+            except Exception, e:
+                logging.error('Failed to schedule tweet: %s' % e)
 
         self.assign('faved', True)
         self.assign('fave', fave)
@@ -226,4 +242,13 @@ class Faved(things.Request):
 
         self.assign('faves', faves)
         self.display('faved.html')
+        return
+
+class About(things.Request):
+
+    def get(self):
+
+        self.check_logged_in(self.min_perms)
+
+        self.display("about.html")
         return

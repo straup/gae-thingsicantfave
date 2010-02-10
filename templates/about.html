@@ -1,0 +1,23 @@
+{% include "inc_head.html" %}
+
+<div class="margin20" style="margin-left:15%;">
+
+<h2>Things I Can't Fave</h2>
+
+<p style="font-size:small;">This is a Very Simple&trade; web application that allows you to favourite things you can't otherwise fave on Flickr. Things like sets, collections, galleries and comments.</p>
+
+<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:50px;">
+	<li>You can fave galleries, sets, collections and comments.</li>
+	<li>You can't fave groups, group pools or people. Yet.</li>
+	<li>You can't fave your own stuff.</li>
+</li>
+
+{% if user.username %}
+<p id="getstarted"><strong><a href="/">&rarr; Why not fave something?</a></strong></p>
+{% else %}
+<p id="getstarted"><strong><a href="/signin">&rarr; Sign in to get started</a></strong></p>
+{% endif %}
+
+</div>
+
+{% include "inc_foot.html" %}
