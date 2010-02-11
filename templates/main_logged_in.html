@@ -12,7 +12,38 @@ No Flickr URL was supplied.
 {% endifequal %}
 
 {% ifequal error 'cannot_parse' %}
-Unable to parse that URL.
+Unable to parse that URL because
+
+{% ifequal parse_error 'url' %}
+ it doesn't even look like a URL!
+{% endifequal %}
+
+{% ifequal parse_error 'invalid' %}
+ it doesn't look like a Flickr URL!
+{% endifequal %}
+
+{% ifequal parse_error 'owner' %}
+ we couldn't get user information from Flickr!
+{% endifequal %}
+
+{% ifequal parse_error 'owner_unknown' %}
+ Flickr wouldn't tell us who that user is.
+{% endifequal %}
+
+{% ifequal parse_error 'comment' %}
+ we can't figure out who the comment owner is.
+{% endifequal %}
+
+{% ifequal parse_error 'other' %}
+ that looks like something you (drumroll) can't fave.
+
+<span style="font-size:small; color:#666;"><a href="/about">Here are the list of things you <em>can</em> fave</a>.</span>
+{% endifequal %}
+
+{% ifequal parse_error 'unknown' %}
+ uh... uh... *explodes*
+{% endifequal %}
+
 {% endifequal %}
 
 {% ifequal error 'is_own' %}

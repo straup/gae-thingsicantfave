@@ -46,10 +46,16 @@ class Main (things.Request):
             self.display('main_logged_in.html')
             return
 
-        thing = self.parse_url(self.request.get('url'))
-
-        if not thing:
+        try:
+            thing = self.parse_url(self.request.get('url'))
+        except things.ParseURLException, e:
             self.assign('error', 'cannot_parse')
+            self.assign('parse_error', e.value)
+            self.display('main_logged_in.html')
+            return
+        except Exception, e:
+            self.assign('error', 'cannot_parse')
+            self.assign('parse_error', 'unknown')
             self.display('main_logged_in.html')
             return
 

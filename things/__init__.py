@@ -7,6 +7,13 @@ import re
 re_comment = re.compile(r'comment\d+')
 re_nsid = re.compile(r'\d+@N\d+')
 
+import logging
+logging.basicConfig(level=logging.INFO)
+
+class ParseURLException (Exception) :
+  def __init__(self, value):
+    self.value = value
+
 class Request (FlickrAppRequest) :
 
     def __init__ (self) :
@@ -41,12 +48,14 @@ class Request (FlickrAppRequest) :
         try:
             obj = urlparse.urlparse(url)
         except Exception, e:
-            return None
+            logging.warning('Failed to parse URL %s: %s' % (url, e))
+            raise ParseURLException, 'url'
 
         valid_hosts = ('flickr.com', 'www.flickr.com')
 
         if not obj.hostname in valid_hosts:
-            return None
+            logging.warning('Invalid URL %s' % url)
+            raise ParseURLException, 'invalid'
 
         if obj.hostname == 'flickr.com':
             url = url.replace('flickr.com', 'www.flickr.com')
@@ -58,19 +67,27 @@ class Request (FlickrAppRequest) :
 
         parts = path.split("/")
 
+        # to do
+        # group(pool)s: http://www.flickr.com/services/api/flickr.urls.lookupGroup.html
+        # people: http://www.flickr.com/services/api/flickr.urls.lookupUser.html
+
         if len(parts) < 4:
-            return None
+            logging.error('Unknown URL type %s' % url)
+            raise ParseURLException, 'other'
 
         if parts[0] != 'photos':
-            return None
+            logging.error('Unknown URL type %s' % url)
+            raise ParseURLException, 'other'
 
         try:
             owner = self.find_user(parts[1])
         except Exception, e:
-            return None
+            logging.error('Failed to retrieve user %s: %s' % (parts[1], e))
+            raise ParseURLException, 'owner'
 
         if not owner:
-            return None
+            logging.error('Unknown user %s' % parts[1])
+            raise ParseURLException, 'owner_unknown'
 
         """
         if owner['user']['id'] == self.user.nsid:
@@ -119,11 +136,12 @@ class Request (FlickrAppRequest) :
                         data['commentor_nsid'] = c['author']
 
             except Exception, e:
-                return None
+                logging.warning('Failed to retrieve comment owner for %s' % parts[2])
+                raise ParseURLException, 'comment'
 
             return data
 
-        return None
+        raise ParseURLException, 'other'
 
     def prepare_faves(self, faves):
 
