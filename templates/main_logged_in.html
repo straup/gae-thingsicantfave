@@ -1,7 +1,33 @@
 {% include "inc_head.html" %}
 
 {% if error %}
-<p class="error">Hrmph! Adding that as a fave didn't work. The robot monkeys report: {{ error|escape }}</a>
+<p class="error">Hrmph! Adding that as a fave didn't work. The robot monkeys report:
+
+{% ifequal error 'no_url' %}
+No Flickr URL was supplied.
+{% endifequal %}
+
+{% ifequal error 'invalid_crumb' %}
+(crumb)
+{% endifequal %}
+
+{% ifequal error 'cannot_parse' %}
+Unable to parse that URL.
+{% endifequal %}
+
+{% ifequal error 'is_own' %}
+You can not fave your own stuff!
+{% endifequal %}
+
+{% ifequal error 'already_faved' %}
+You've already faved that!
+{% endifequal %}
+
+{% ifequal error 'cannot_add' %}
+It looks like the database is freaking out. How awesome is that?!
+{% endifequal %}
+
+</a>
 {% endif %}
 
 {% if faved %}

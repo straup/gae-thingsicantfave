@@ -32,10 +32,27 @@ class Tweet (things.Request):
 
         self.prepare_fave(fave)
 
+        fave_url = fave.url
+
         msg = "#%s faved a %s by #%s" % (fave.creator, fave.category_singular, fave.owner)
 
-        # guh... do not want to write a URL shortener...
-        msg += " / %s" % fave.url
+        if config['twitter_shorten_urls']:
+
+            # some day Flickr will have a generic URL shortener...
+
+            try:
+                data = urllib.urlencode({'url' : fave_url})
+                req = urllib2.Request('http://bit.ly/api', data)
+                res = urllib2.urlopen(req)
+                short_url = res.read()
+
+                if short_url != '':
+                    fave_url = short_url
+
+            except Exception, e:
+                logging.warning("failed to retrieve bitly URL for %s: %s" % (fave_url, e))
+
+        msg += ": %s" % fave_url
 
         url = 'http://twitter.com/statuses/update.json'
         data = {'status': msg}

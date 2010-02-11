@@ -74,6 +74,8 @@ class Main (things.Request):
             thing['creator_nsid'] = self.user.nsid
             fave = things.Faves.fave_thing(thing)
         except Exception, e:
+            logging.error('failed to add %s : %s' % (thing['url'], e))
+
             self.assign('error', 'cannot_add')
             self.display('main_logged_in.html')
             return
