@@ -43,6 +43,22 @@
 {% endifequal %}
 {% endifequal %}
 
+{% ifequal what 'people' %}
+{% ifequal who 'You' %}
+<h3>You have not faved any other Flickr users.</h3>
+{% else %}
+<h3>{{ who|escape }} has not faved any other Flickr users.</h3>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'groups' %}
+{% ifequal who 'You' %}
+<h3>You have not faved any groups.</h3>
+{% else %}
+<h3>{{ who|escape }} has not faved any groups.</h3>
+{% endifequal %}
+{% endifequal %}
+
 {% endifequal %}
 
 {% else %}
@@ -86,6 +102,23 @@
 <h2>{{ who|escape }} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}comment{% else %}comments{% endifequal %}</h2>
 {% endifequal %}
 {% endifequal %}
+
+{% ifequal what 'people' %}
+{% ifequal who 'You' %}
+<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}Flickr user{% else %}Flickr users{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape }} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}Flickr user{% else %}Flickr users{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
+{% ifequal what 'groups' %}
+{% ifequal who 'You' %}
+<h2>You have faved {{ count_faves|escape }} {% ifequal count_faves 1 %}group{% else %}groups{% endifequal %}</h2>
+{% else %}
+<h2>{{ who|escape }} has faved {{ count_faves|escape }} {% ifequal count_faves 1 %}group{% else %}groups{% endifequal %}</h2>
+{% endifequal %}
+{% endifequal %}
+
 
 {% endifequal %}
 

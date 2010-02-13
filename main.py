@@ -16,11 +16,11 @@ if __name__ == '__main__':
     (r'/about/?$', things.App.About),
 
     (r'/fave(?:s|d)/?$', things.App.RecentFaves),
-    (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.FavedBy),
-    (r'/faved/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.App.Faved),
+    (r'/faves/([^/]+)(?:/(galleries|sets|collections|comments|people|groups))?/?$', things.App.FavedBy),
+    (r'/faved/([^/]+)(?:/(galleries|sets|collections|comments|people|groups))?/?$', things.App.Faved),
 
     (r'/rss/faves/?$', things.Feeds.RSS),
-    (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments))?/?$', things.Feeds.RSS),
+    (r'/rss/faves/([^/]+)(?:/(galleries|sets|collections|comments|people|groups))?/?$', things.Feeds.RSS),
 
     ('/export', things.Export.JSON),
     ('/signout', things.Auth.Signout),

@@ -66,6 +66,24 @@ ul {
     font-weight:700;
 }
 
+.group{
+    font-weight:700;
+}
+
+.groupname{
+    color:blue;
+    text-decoration:underline;
+}
+
+.username{
+    color:blue;
+    text-decoration:underline;
+}
+
+.person{
+    font-weight:700;
+}
+
 .faved_date {
     display:none;
 }

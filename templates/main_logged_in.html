@@ -40,6 +40,18 @@ Unable to parse that URL because
 <span style="font-size:small; color:#666;"><a href="/about">Here are the list of things you <em>can</em> fave</a>.</span>
 {% endifequal %}
 
+{% ifequal parse_error 'group' %}
+ we couldn't find any information about the group from Flickr.
+{% endifequal %}
+
+{% ifequal parse_error 'user' %}
+ we couldn't find any information about the group from Flickr.
+{% endifequal %}
+
+{% ifequal parse_error 'user_same' %}
+ you can't fave yourself!
+{% endifequal %}
+
 {% ifequal parse_error 'unknown' %}
  uh... uh... *explodes*
 {% endifequal %}
@@ -79,6 +91,14 @@ It looks like the database is freaking out. How awesome is that?!
 
 {% ifequal fave.category 'collections' %}
 <h3>Woo hoo! You faved that collections!!</h3>
+{% endifequal %}
+
+{% ifequal fave.category 'people' %}
+<h3>Woo hoo! You faved that person!!</h3>
+{% endifequal %}
+
+{% ifequal fave.category 'groups' %}
+<h3>Woo hoo! You faved that group!!</h3>
 {% endifequal %}
 
 <br clear="all" />

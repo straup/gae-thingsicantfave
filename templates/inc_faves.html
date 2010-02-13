@@ -26,13 +26,25 @@
 
 {% else %}
 
+{% ifequal f.category 'people' %}
+
 <li id="fave_{{ f.key|escape }}" class="fave">
 
-  <a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> by <a href="/faved/{{ f.owner_nsid|escape }}/{{ f.category|escape }}/">{{ f.owner|escape }}</a> <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
+<a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape }}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">user</a> {% ifequal f.owner 'something' %}{% else %}named <span class="username">{{ f.owner|escape }}</span>{% endifequal %} <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
 
 {% include "inc_delete_fave.html" %}
 </li>
 
+{% else %}
+
+<li id="fave_{{ f.key|escape }}" class="fave">
+
+  <a href="/faves/{{ f.creator_nsid|escape }}/{{ f.category|escape }}">{{ f.creator|escape}}</a> faved a <a href="{{ f.url|escape }}" target="_what" class="{{ f.category_singular|escape }}">{{ f.category_singular|escape }}</a> {% ifequal f.category 'groups' %}called <span class="groupname">{{ f.owner|escape }}</span>{% else %}by <a href="/faved/{{ f.owner_nsid|escape }}/{{ f.category|escape }}/">{{ f.owner|escape }}</a>{% endifequal %} <span class="faved_date">on {{ f.date_created|date:"F jS"|escape }}</span>
+
+{% include "inc_delete_fave.html" %}
+</li>
+
+{% endifequal %}
 {% endifequal %}
 
 {% endfor %}

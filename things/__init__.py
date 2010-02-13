@@ -67,81 +67,133 @@ class Request (FlickrAppRequest) :
 
         parts = path.split("/")
 
-        # to do
-        # group(pool)s: http://www.flickr.com/services/api/flickr.urls.lookupGroup.html
-        # people: http://www.flickr.com/services/api/flickr.urls.lookupUser.html
-
-        if len(parts) < 4:
-            logging.error('Unknown URL type %s' % url)
+        if not parts[0] in ('photos', 'groups', 'people') :
             raise ParseURLException, 'other'
 
-        if parts[0] != 'photos':
-            logging.error('Unknown URL type %s' % url)
-            raise ParseURLException, 'other'
+        if parts[0] == 'photos' and len(parts) == 2:
+          parts[0] = 'people'
 
-        try:
+        # groups
+
+        if parts[0] == 'groups':
+
+          try:
+            method = 'flickr.urls.lookupGroup'
+            args = { 'url' : url }
+            rsp = self.api_call(method, args)
+          except Exception, e:
+            raise ParseURLException, 'group'
+
+          if rsp['stat'] != 'ok':
+            raise ParseURLException, 'group'
+
+          name = rsp['group']['groupname']['_content']
+
+          """
+          try:
+            method = 'flickr.groups.members.getList'
+            args = { 'group_id' : rsp['group']['id'], 'membertypes' : 4 }
+            rsp = self.proxy_api_call(method, args, 600)
+          except Exception, e:
+            raise ParseURLException, 'group_noinfo'
+          """
+
+          # HOW TO: ensure group owner is not self.user.nsid
+
+          return {
+            'url' : 'http://www.flickr.com/groups/%s' % rsp['group']['id'],
+            'category' : 'groups',
+            'owner_nsid' : rsp['group']['id'],
+            }
+
+        # people
+
+        elif parts[0] == 'people':
+
+          try:
+            method = 'flickr.urls.lookupUser'
+            args = { 'url' : url }
+            rsp = self.api_call(method, args)
+          except Exception, e:
+            raise ParseURLException, 'user'
+
+          if rsp['stat'] != 'ok':
+            raise ParseURLException, 'user'
+
+          if rsp['user']['id'] == self.user.nsid:
+            raise ParseURLException, 'user_same'
+
+          return {
+            'url' : 'http://www.flickr.com/people/%s' % rsp['user']['id'],
+            'category' : 'people',
+            'owner_nsid' : rsp['user']['id'],
+            }
+
+        # photos
+
+        else:
+          try:
             owner = self.find_user(parts[1])
-        except Exception, e:
+          except Exception, e:
             logging.error('Failed to retrieve user %s: %s' % (parts[1], e))
             raise ParseURLException, 'owner'
 
-        if not owner:
+          if not owner:
             logging.error('Unknown user %s' % parts[1])
             raise ParseURLException, 'owner_unknown'
 
-        """
-        if owner['user']['id'] == self.user.nsid:
-            return None
-        """
+          """
+          if owner['user']['id'] == self.user.nsid:
+          return None
+          """
 
-        buckets = ('galleries', 'sets', 'collections')
+          buckets = ('galleries', 'sets', 'collections')
 
-        if parts[2] in buckets:
+          if parts[2] in buckets:
 
             # http://www.flickr.com/photos/straup/galleries/72157622732572228/#comment72157623019473750
             # also, sets...
 
             return {
-                'url' : url,
-                'owner_nsid' : owner['user']['id'],
-                'category' : parts[2],
-                }
+              'url' : url,
+              'owner_nsid' : owner['user']['id'],
+              'category' : parts[2],
+              }
 
-        comment_id = None
+          comment_id = None
 
-        if re_comment.match(parts[3]):
+          if re_comment.match(parts[3]):
             comment_id = parts[3]
-        elif re_comment.match(obj.fragment):
+          elif re_comment.match(obj.fragment):
             comment_id = obj.fragment
-        else:
+          else:
             pass
 
-        if comment_id:
+          if comment_id:
 
             data = {
-                'url' : url,
-                'owner_nsid' : owner['user']['id'],
-                'category' : 'comments',
-                }
+              'url' : url,
+              'owner_nsid' : owner['user']['id'],
+              'category' : 'comments',
+              }
 
             try:
-                method = 'flickr.photos.comments.getList'
-                args = { 'photo_id' : parts[2] }
+              method = 'flickr.photos.comments.getList'
+              args = { 'photo_id' : parts[2] }
+              # rsp = self.proxy_api_call(method, args, 300)
+              rsp = self.api_call(method, args)
 
-                # rsp = self.proxy_api_call(method, args, 300)
-                rsp = self.api_call(method, args)
-
-                for c in rsp['comments']['comment']:
-                    if c['permalink'].endswith(comment_id):
-                        data['commentor_nsid'] = c['author']
+              for c in rsp['comments']['comment']:
+                if c['permalink'].endswith(comment_id):
+                  data['commentor_nsid'] = c['author']
 
             except Exception, e:
-                logging.warning('Failed to retrieve comment owner for %s' % parts[2])
-                raise ParseURLException, 'comment'
+              logging.warning('Failed to retrieve comment owner for %s' % parts[2])
+              raise ParseURLException, 'comment'
 
             return data
 
-        raise ParseURLException, 'other'
+          raise ParseURLException, 'other'
 
     def prepare_faves(self, faves):
 
@@ -158,35 +210,61 @@ class Request (FlickrAppRequest) :
             f.category_singular = 'set'
         elif f.category == 'collections':
             f.category_singular = 'collection'
+        elif f.category == 'people':
+            f.category_singular = 'person'
+        elif f.category == 'groups':
+            f.category_singular = 'group'
 
-        if self.user and self.user.nsid == f.creator_nsid:
+        if f.category == 'groups':
+
+          try:
+            method = 'flickr.groups.getInfo'
+            args = { 'group_id' : f.owner_nsid }
+            rsp = self.proxy_api_call(method, args, 600)
+
+            f.owner = rsp['group']['name']['_content']
+          except Exception, e:
+            f.owner = 'something'
+
+          if self.user and self.user.nsid == f.creator_nsid:
             f.creator = 'You'
-        else:
+          else:
             try:
-                creator = self.flickr_get_user_info(f.creator_nsid)
-                f.creator = creator['username']['_content']
+              creator = self.flickr_get_user_info(f.creator_nsid)
+              f.creator = creator['username']['_content']
             except Exception, e:
-                f.creator = 'someone'
+              f.creator = 'Someone'
 
-        if self.user and self.user.nsid == f.owner_nsid:
+        else:
+
+          if self.user and self.user.nsid == f.creator_nsid:
+            f.creator = 'You'
+          else:
+            try:
+              creator = self.flickr_get_user_info(f.creator_nsid)
+              f.creator = creator['username']['_content']
+            except Exception, e:
+              f.creator = 'someone'
+
+          if self.user and self.user.nsid == f.owner_nsid:
             f.owner = 'You'
-        else:
+          else:
             try:
-                owner = self.flickr_get_user_info(f.owner_nsid)
-                f.owner = owner['username']['_content']
+              owner = self.flickr_get_user_info(f.owner_nsid)
+              f.owner = owner['username']['_content']
             except Exception, e:
-                f.owner = 'someone'
+              f.owner = 'someone'
 
-        if f.commentor_nsid:
+          if f.commentor_nsid:
 
             if self.user and self.user.nsid == f.commentor_nsid:
-                f.commentor = 'You'
+              f.commentor = 'You'
             else:
-                try:
-                    commentor = self.flickr_get_user_info(f.commentor_nsid)
-                    f.commentor = commentor['username']['_content']
-                except Exception, e:
-                    f.commentor = 'someone'
+              try:
+                commentor = self.flickr_get_user_info(f.commentor_nsid)
+                f.commentor = commentor['username']['_content']
+              except Exception, e:
+                f.commentor = 'someone'
 
     def is_nsid(self, str):
 
