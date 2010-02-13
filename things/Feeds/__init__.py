@@ -42,7 +42,11 @@ class RSS (Syndicate):
 
         for fv in faves:
 
-            if fv.commentor_nsid:
+            if fv.category == 'groups':
+                title = '%s faved a %s called %s' % (fv.creator, fv.category_singular, fv.commentor)
+            elif fv.category == 'people':
+                title = '%s faved a %s named %s' % (fv.creator, fv.category_singular, fv.commentor)
+            elif fv.commentor_nsid:
                 title = '%s faved a %s by %s' % (fv.creator, fv.category_singular, fv.commentor)
             else:
                 title = '%s faved a %s by %s' % (fv.creator, fv.category_singular, fv.owner)
