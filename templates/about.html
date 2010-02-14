@@ -6,17 +6,43 @@
 
 <p style="font-size:small;">This is a Very Simple&trade; web application that allows you to favourite things you can't otherwise fave on Flickr. Things like sets, collections, galleries and comments.</p>
 
-<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:50px;">
+<h3 style="margin-top:30px;">How does it work?</h3>
+
+<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:10px;">
 	<li>You can fave galleries, sets, collections, groups, people and comments on photos.</li>
 	<li>You can't comments on galleries. Yet.</li>
 	<li>You can't fave your own stuff.</li>
-</li>
+</ul>
+
+<h3>How do I add a fave?</h3>
+
+<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:10px;">
+  	<li>You fave something by copying its (Flickr) URL in to the <a href="/">form on the front page</a>.</li>
+  	<li>You can also drag the <q><a href="javascript:var w=open('http://thingsicantfave.appspot.com/?url='+encodeURIComponent(location.href)); w.focus();">fave this</a></q> bookmarklet to your browser's toolbar to fave stuff directly from Flickr!</li>
+</ul>
+
+<h3>How do I find out about new stuff?</h3>
+
+<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:10px;">
+       <li>There is a <a href="http://twitter.com/thingsicantfave">thingsicantfave Twitter account</a> that gets updated every time a new fave is added</a>
+       <li>There are <a href="http://en.wikipedia.org/wiki/RSS">RSS feeds</a> at the bottom of all the pages. You can subscribe to a list of all the faves or just those for a particular user.</li>
+</ul>
+
+<h3>Can I get my faves <em>out</em> of this thing?</h3>
+
+<ul  style="line-height:25px;list-style-type:none;margin-top:30px;margin-bottom:40px;margin-left:10px;">
+	<li>You can <a href="http://localhost:8087/export">export a list of all your faves</a> at any time.</li>
+</ul>
+
+<h3>Okay, what do I do next?</h3>
 
 {% if user.username %}
+<div style="margin-left:50px">
 <p id="getstarted"><strong><a href="/">&rarr; Why not fave something?</a></strong></p>
 {% else %}
 <p id="getstarted"><strong><a href="/signin">&rarr; Sign in to get started</a></strong></p>
 {% endif %}
+</div>
 
 </div>
 
