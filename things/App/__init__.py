@@ -16,14 +16,10 @@ class Main (things.Request):
 
         if not self.check_logged_in(self.min_perms) :
 
-            # fix me: crumb breaks during this flow
-
-            """
             if url:
-                redir = '/?url=%s' % urllib.quote(url)
+                redir = urllib.quote('/?url=%s' % urllib.quote(url))
                 self.do_flickr_auth(self.min_perms, redir)
                 return
-            """
 
             self.display("main_logged_out.html")
             return
