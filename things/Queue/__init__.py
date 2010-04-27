@@ -34,7 +34,11 @@ class Tweet (things.Request):
 
         fave_url = fave.url
 
-        msg = "#%s faved a %s by #%s" % (fave.creator, fave.category_singular, fave.owner)
+        creator = fave.creator.encode('ascii', 'replace')
+        category = fave.category_singular.encode('ascii', 'replace')
+        owner = fave.owner.encode('ascii', 'replace')
+
+        msg = "#%s faved a %s by #%s" % (creator, category, owner)
 
         if config['twitter_shorten_urls']:
 
@@ -68,7 +72,7 @@ class Tweet (things.Request):
             req = urllib2.Request(url, data, headers)
             res = urllib2.urlopen(req)
         except Exception, e:
-            logging.error('failed to tweet: %s' % e)
+            logging.error('failed to tweet: %s ("%s")' % (e, msg))
 
             self.response.out.write('FAIL')
             return
