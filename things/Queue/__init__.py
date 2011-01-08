@@ -4,10 +4,12 @@ from config import config
 
 import things
 import things.Faves
-import base64
-import urllib
-import urllib2
 import logging
+
+import time
+import httplib
+import httplib2
+import oauth2
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -37,6 +39,8 @@ class Tweet (things.Request):
         creator = fave.creator.encode('ascii', 'replace')
         category = fave.category_singular.encode('ascii', 'replace')
         owner = fave.owner.encode('ascii', 'replace')
+        owner = owner.replace(" ", "")
+        owner = owner.lower()
 
         msg = "#%s faved a %s by #%s" % (creator, category, owner)
 
@@ -58,27 +62,43 @@ class Tweet (things.Request):
 
         msg += ": %s" % fave_url
 
-        url = 'http://twitter.com/statuses/update.json'
-        data = {'status': msg}
-
-        user = config['twitter_username']
-        pswd = config['twitter_password']
-
-        auth = base64.encodestring('%s:%s' % (user, pswd))[:-1]
-        headers = {'Authorization' : 'Basic %s' % auth }
-
         try:
-            data = urllib.urlencode({"status" : msg})
-            req = urllib2.Request(url, data, headers)
-            res = urllib2.urlopen(req)
+            rsp = self.send_tweet(msg)
+            self.response.out.write(rsp)
+
         except Exception, e:
-            logging.error('failed to tweet: %s ("%s")' % (e, msg))
+            logging.error('failed to post tweet (%s) : %s' % (msg, e))
+            self.response.out.write(e)
 
-            self.response.out.write('FAIL')
-            return
-
-        logging.info(msg)
-
-        self.response.out.write('OK')
         return
 
+    def send_tweet(self, msg):
+
+        host = 'api.twitter.com'
+        endpoint = '/1/statuses/update.json'
+
+        url = 'http://' + host + endpoint
+
+        token = oauth2.Token(key=config['twitter_access_token'], secret=config['twitter_access_secret'])
+        consumer = oauth2.Consumer(key=config['twitter_consumer_token'], secret=config['twitter_consumer_secret'])
+
+        params = {
+            'status' : msg,
+            'oauth_token' : token.key,
+            'oauth_consumer_key' : consumer.key,
+            'oauth_nonce' : oauth2.generate_nonce(),
+            'oauth_timestamp' :int(time.time()),
+            }
+
+        req = oauth2.Request(method="POST", url=url, parameters=params)
+
+        signature_method = oauth2.SignatureMethod_HMAC_SHA1()
+        req.sign_request(signature_method, consumer, token)
+
+        body = req.to_postdata()
+
+        conn = httplib.HTTPConnection('api.twitter.com')
+        conn.request('POST', '/1/statuses/update.json', body)
+
+        rsp = conn.getresponse()
+        return rsp.status
